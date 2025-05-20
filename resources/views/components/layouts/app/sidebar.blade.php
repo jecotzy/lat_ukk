@@ -3,8 +3,9 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
-        <flux:sidebar sticky stashable class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+    <body class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <flux:sidebar sticky stashable class="w-48 bg-gray-900 text-gray-100 border-e border-gray-800">
+
             <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
 
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
@@ -16,6 +17,35 @@
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
+
+            <flux:navlist.item 
+                icon="user-circle" 
+                :href="route('siswa')" 
+                :current="request()->routeIs('siswa*')" 
+                wire:navigate>
+                {{ __('Siswa') }}
+            </flux:navlist.item>
+            <flux:navlist.item 
+                icon="academic-cap" 
+                :href="route('guru')" 
+                :current="request()->routeIs('guru*')" 
+                wire:navigate>
+                {{ __('Guru') }}
+            </flux:navlist.item>
+            <flux:navlist.item 
+                icon="building-office-2" 
+                :href="route('industri')" 
+                :current="request()->routeIs('industri*')" 
+                wire:navigate>
+                {{ __('industri') }}
+            </flux:navlist.item>
+            <flux:navlist.item 
+                icon="briefcase" 
+                :href="route('pkl')" 
+                :current="request()->routeIs('pkl*')" 
+                wire:navigate>
+                {{ __('Pkl') }}
+            </flux:navlist.item>
 
             <flux:spacer />
 

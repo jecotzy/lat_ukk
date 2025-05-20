@@ -32,7 +32,7 @@ class SiswaResource extends Resource
             Forms\Components\Textarea::make('alamat')->required(),
             Forms\Components\TextInput::make('kontak')->required(),
             Forms\Components\TextInput::make('email')->email()->required(),
-            Forms\Components\FileUpload::make('foto')->image()->directory('fotosiswa'),
+            Forms\Components\FileUpload::make('foto')->image()->directory('foto_siswa'),
             Forms\Components\Select::make('status_lapor_pkl')
                 ->options(['no' => 'Belum Lapor', 'yes' => 'Sudah Lapor'])
                 ->required(),
@@ -40,19 +40,30 @@ class SiswaResource extends Resource
     }
 
     public static function table(Table $table): Table
-    {
-        return $table->columns([
+{
+    return $table
+        ->columns([
+            Tables\Columns\ImageColumn::make('foto')
+            ->disk('public')
+            ->label('Foto')
+            ->circular(),
+
+
             Tables\Columns\TextColumn::make('nama')->searchable(),
             Tables\Columns\TextColumn::make('nis'),
             Tables\Columns\TextColumn::make('gender'),
             Tables\Columns\TextColumn::make('email'),
             Tables\Columns\TextColumn::make('status_lapor_pkl'),
-        ])->filters([])->actions([
+        ])
+        ->filters([])
+        ->actions([
             Tables\Actions\EditAction::make(),
-        ])->bulkActions([
+        ])
+        ->bulkActions([
             Tables\Actions\DeleteBulkAction::make(),
         ]);
-    }
+}
+
 
     public static function getRelations(): array
     {
