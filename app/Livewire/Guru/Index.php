@@ -1,69 +1,68 @@
 <?php
 
 namespace App\Livewire\Guru;
-
-use Livewire\Component;
 use App\Models\Guru;
 use Livewire\WithPagination;
-use App\Models\ActivityLog;       // import model ActivityLog
-use Illuminate\Support\Facades\Auth;  // import Auth
+
+
+use Livewire\Component;
 
 class Index extends Component
-{
+{ // Memanggil pagination
     use WithPagination;
 
+    protected $paginationTheme = 'tailwind'; // pastikan tema pagination Tailwind dipakai
+    // Deklarasi variabel numpage dan search
+    public $numpage = 5;
     public $search;
     public $deleteId = null;
 
-    protected $paginationTheme = 'tailwind';
 
+    // Reset halaman setelah search
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
+    public function updatePageSize($size)
+    {
+        $this->numpage = $size;
+    }
+
+
     public function confirmDelete($id)
-    {
-        $this->deleteId = $id;
-    }
+{
+    $this->deleteId = $id;
+}
+    // Menghapus data
+public function delete($id)
+{
+    Guru::findOrFail($id)->delete();
+    session()->flash('message', 'Data guru berhasil dihapus.');
+    $this->deleteId = null; // Tutup modal setelah delete
+}
 
-    // Hapus data guru dengan log aktivitas
-    public function delete($id)
-    {
-        $guru = Guru::findOrFail($id);
 
-        // Simpan nama guru sebelum dihapus, untuk log
-        $guruName = $guru->nama;
-
-        $guru->delete();
-
-        // Buat log aktivitas
-        ActivityLog::create([
-            'user_id' => Auth::id(),
-            'description' => "Menghapus Data Guru : $guruName",
-        ]);
-
-        session()->flash('message', 'Data guru berhasil dihapus.');
-        $this->deleteId = null; // Tutup modal
-    }
-
+    // Method untuk render keseluruhan
     public function render()
     {
-        $guruList = Guru::when($this->search, function ($query) {
-            $query->where(function ($q) {
-                $q->where('nama', 'like', '%' . $this->search . '%')
-                  ->orWhere('nip', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%');
-            });
-        })
-        ->orderBy('nama')
-        ->paginate(10);
+        $query = Guru::query();
+
+        if (!empty($this->search)) {
+            $query->where('nama', 'like', '%' . $this->search . '%')
+                ->orWhere('nip', 'like', '%' . $this->search . '%')
+                ->orWhere('email', 'like', '%' . $this->search . '%');
+        }
+
+        $this->guruList = $query->paginate($this->numpage);
 
         return view('livewire.guru.index', [
-            'guruList' => $guruList,
+            'guruList' => $this->guruList,
         ]);
     }
 
+    
+    // Function gender
     public function ketGender($gender)
     {
         if ($gender === 'L') {
@@ -74,4 +73,5 @@ class Index extends Component
             return 'Status tidak diketahui';
         }
     }
+
 }

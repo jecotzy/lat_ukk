@@ -36,6 +36,34 @@ class Form extends Component
         ];
     }
 
+    public function messages()
+{
+    return [
+        'nama.required' => 'Nama industri harus diisi.',
+        'nama.string' => 'Nama industri harus berupa teks.',
+        'nama.max' => 'Nama industri maksimal 255 karakter.',
+
+        'bidang_usaha.required' => 'Bidang usaha harus diisi.',
+        'bidang_usaha.string' => 'Bidang usaha harus berupa teks.',
+        'bidang_usaha.max' => 'Bidang usaha maksimal 255 karakter.',
+
+        'alamat.required' => 'Alamat harus diisi.',
+        'alamat.string' => 'Alamat harus berupa teks.',
+
+        'kontak.required' => 'Kontak harus diisi.',
+        'kontak.string' => 'Kontak harus berupa teks.',
+        'kontak.max' => 'Kontak maksimal 255 karakter.',
+
+        'email.required' => 'Email harus diisi.',
+        'email.email' => 'Format email tidak valid.',
+        'email.max' => 'Email maksimal 255 karakter.',
+
+        'website.string' => 'Website harus berupa teks.',
+        'website.max' => 'Website maksimal 255 karakter.',
+    ];
+}
+
+
     public function save()
     {
         $this->validate();

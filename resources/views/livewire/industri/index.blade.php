@@ -113,17 +113,21 @@
     <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="flex items-center space-x-2">
             <span class="text-sm text-gray-400">Menampilkan</span>
-            <select wire:model.live="numpage"
-                class="bg-gray-800 border border-gray-700 text-white rounded px-3 py-1 text-sm">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
+            <select wire:model="numpage" wire:change="updatePageSize($event.target.value)" id="perPage"
+                        class="px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 rounded-md">
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="{{ $industriList->total() }}">semua</option>
             </select>
+            <span class="text-sm text-gray-700 dark:text-gray-200">data per halaman</span>
+
             <span class="text-sm text-gray-400">data per halaman</span>
         </div>
         <div class="text-white">
-            {{ $industriList->links('vendor.pagination.tailwind') }}
+        {{ $industriList->links() }}
         </div>
     </div>
 </div>

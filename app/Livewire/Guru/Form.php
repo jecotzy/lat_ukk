@@ -37,6 +37,36 @@ class Form extends Component
         ];
     }
 
+    public function messages()
+{
+    return [
+        'nama.required' => 'Nama guru harus diisi.',
+        'nama.string' => 'Nama guru harus berupa teks.',
+        'nama.max' => 'Nama guru maksimal 255 karakter.',
+
+        'nip.required' => 'NIP harus diisi.',
+        'nip.string' => 'NIP harus berupa teks.',
+        'nip.max' => 'NIP maksimal 255 karakter.',
+        'nip.unique' => 'NIP sudah digunakan.',
+
+        'gender.required' => 'Jenis kelamin harus dipilih.',
+        'gender.in' => 'Jenis kelamin harus L atau P.',
+
+        'alamat.required' => 'Alamat harus diisi.',
+        'alamat.string' => 'Alamat harus berupa teks.',
+
+        'kontak.required' => 'Kontak harus diisi.',
+        'kontak.string' => 'Kontak harus berupa teks.',
+        'kontak.max' => 'Kontak maksimal 255 karakter.',
+
+        'email.required' => 'Email harus diisi.',
+        'email.email' => 'Format email tidak valid.',
+        'email.max' => 'Email maksimal 255 karakter.',
+        'email.unique' => 'Email sudah digunakan.',
+    ];
+}
+
+
     public function save()
     {
         $this->validate();

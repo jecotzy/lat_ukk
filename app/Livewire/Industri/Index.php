@@ -12,7 +12,8 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $numpage = 10;
+    protected $paginationTheme = 'tailwind';
+    public $numpage = 5;
     public $search;
     public $deleteId = null;
 
@@ -21,6 +22,10 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function updatePageSize($size)
+    {
+        $this->numpage = $size;
+    }
     public function confirmDelete($id)
     {
         $this->deleteId = $id;
@@ -59,5 +64,6 @@ class Index extends Component
         return view('livewire.industri.index', [
             'industriList' => $industriList,
         ]);
+
     }
 }

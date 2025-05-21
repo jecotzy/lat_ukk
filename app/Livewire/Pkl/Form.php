@@ -22,8 +22,7 @@ class Form extends Component
     public function mount($id = null)
     {
         $this->userMail = Auth::user()->email;
-
-        $this->siswaList = Siswa::all();
+        $this->siswaList = Siswa::where('email', $this->userMail)->get();
         $this->industriList = Industri::all();
         $this->guruList = Guru::all();
 
@@ -51,6 +50,21 @@ class Form extends Component
         ];
     }
 
+    public function messages()
+{
+    return [
+        'siswa_id.required' => 'Silakan pilih siswa.',
+        'industri_id.required' => 'Silakan pilih industri.',
+        'guru_id.required' => 'Silakan pilih guru pembimbing.',
+        'mulai.required' => 'Tanggal mulai harus diisi.',
+        'mulai.date' => 'Format tanggal mulai tidak valid.',
+        'selesai.required' => 'Tanggal selesai harus diisi.',
+        'selesai.date' => 'Format tanggal selesai tidak valid.',
+        'selesai.after' => 'Tanggal selesai harus setelah tanggal mulai.',
+    ];
+}
+
+
     public function save()
 {
     $this->validate();
@@ -68,7 +82,7 @@ class Form extends Component
 
         if (!$this->id && Pkl::where('siswa_id', $siswa->id)->exists()) {
             DB::rollBack();
-            session()->flash('message', 'Input dibatalkan: Anda sudah pernah melaporkan PKL.');
+            session()->flash('message', 'Tidak dapat menambahkan,Anda sudah pernah menambahkan');
             return redirect()->route('pkl');
         }
 
@@ -89,8 +103,8 @@ class Form extends Component
         ActivityLog::create([
             'user_id' => Auth::id(),
             'description' => $isNew
-                ? $siswa->nama . ' menambahkan data PKL'
-                : $siswa->nama . ' memperbarui data PKL',
+                ? $siswa->nama . ' Menambahkan data PKL'
+                : $siswa->nama . ' Memperbarui data PKL',
         ]);
 
         DB::commit();

@@ -1,106 +1,156 @@
-<div class="p-6 max-w-3xl mx-auto bg-gray-900 text-gray-100 shadow-lg rounded-lg">
-    <h2 class="text-2xl font-semibold mb-6 text-center text-white">{{ $id ? 'Edit Siswa' : 'Tambah Siswa' }}</h2>
+<div class="min-h-screen bg-gray-900 flex items-center justify-center p-6">
+  <div class="w-full max-w-lg bg-gray-800 rounded-lg shadow-lg p-8 space-y-6">
+    <h1 class="text-3xl font-extrabold text-white mb-2">{{ $id ? 'Edit Siswa' : 'Tambah Siswa' }}</h1>
+    <p class="text-gray-400 mb-6">Silakan isi data siswa dengan lengkap</p>
 
     <form wire:submit.prevent="save" class="space-y-6">
-        <!-- Nama -->
-        <div>
-            <label for="nama" class="block text-sm font-medium text-gray-300">Nama</label>
-            <input id="nama" type="text" wire:model="nama"
-                class="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 mt-2 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            @error('nama') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+      {{-- Nama --}}
+      <div>
+        <label for="nama" class="block text-sm font-semibold text-gray-300 mb-1">Nama</label>
+        <input id="nama" type="text" wire:model.defer="nama"
+          class="w-full bg-gray-700 border border-gray-600 rounded-md px-4 py-3 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 transition" />
+        @error('nama') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+      </div>
+
+{{-- Foto --}}
+<div>
+  <label for="foto" class="block text-sm font-semibold text-gray-300 mb-1">Foto</label>
+
+  <div
+    x-data="{ isDragging: false }"
+    x-on:dragover.prevent="isDragging = true"
+    x-on:dragleave.prevent="isDragging = false"
+    x-on:drop.prevent="isDragging = false"
+    class="relative w-32 h-32 rounded-full border-2 border-dashed flex items-center justify-center transition duration-200 ease-in-out"
+    :class="isDragging ? 'border-blue-500 bg-blue-50 dark:bg-gray-800' : 'border-gray-600'"
+  >
+    <!-- Input file disembunyikan -->
+    <input id="foto" type="file" wire:model="foto" class="hidden" />
+
+    <!-- Label tombol upload -->
+    @if (!$foto && !$existingFoto)
+    <label for="foto"
+      class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer text-gray-400 rounded-full text-center p-2 hover:bg-gray-700/10 transition">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none"
+        viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M4 16v1a2 2 0 002 2h3m4 0h3a2 2 0 002-2v-1m-6 4V4m0 0L8 8m4-4l4 4" />
+      </svg>
+      <span class="text-xs">Upload</span>
+    </label>
+    @endif
+
+    <!-- Preview Foto -->
+    @if ($foto || $existingFoto)
+    <div class="absolute inset-0">
+      <img
+        src="{{ $foto ? $foto->temporaryUrl() : asset('storage/' . $existingFoto) }}"
+        alt="Preview Foto"
+        class="w-full h-full object-cover rounded-full border border-gray-600 shadow"
+      />
+
+      <!-- Tombol Hapus -->
+      <button
+        type="button"
+        wire:click="hapusFoto"
+        class="absolute top-1 right-1 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs hover:bg-red-700 transition"
+        title="Hapus Foto"
+      >
+        &times;
+      </button>
+    </div>
+    @endif
+
+    @error('foto')
+    <p class="absolute -bottom-6 text-red-500 text-xs text-center w-full">{{ $message }}</p>
+    @enderror
+  </div>
+</div>
+
+
+
+
+
+
+      {{-- NIS --}}
+      <div>
+        <label for="nis" class="block text-sm font-semibold text-gray-300 mb-1">NIS</label>
+        <input id="nis" type="tel" wire:model.defer="nis" pattern="[0-9]*" inputmode="numeric"
+          class="w-full bg-gray-700 border border-gray-600 rounded-md px-4 py-3 text-gray-100 focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 transition" />
+        @error('nis') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+      </div>
+
+      {{-- Gender --}}
+      <div>
+        <label class="block text-sm font-semibold text-gray-300 mb-1">Gender</label>
+        <div class="flex gap-6">
+          <label class="inline-flex items-center">
+            <input type="radio" wire:model.defer="gender" value="L"
+              class="form-radio text-blue-500 bg-gray-800 border-gray-600 focus:ring-blue-500" />
+            <span class="ml-2 text-gray-200">Laki-laki</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input type="radio" wire:model.defer="gender" value="P"
+              class="form-radio text-blue-500 bg-gray-800 border-gray-600 focus:ring-blue-500" />
+            <span class="ml-2 text-gray-200">Perempuan</span>
+          </label>
         </div>
+        @error('gender') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+      </div>
 
-        <!-- Foto -->
-        <div>
-            <label for="foto" class="block text-sm font-medium text-gray-300">Foto</label>
-            <input id="foto" type="file" wire:model="foto"
-                class="w-full text-gray-100 mt-2" />
-            @error('foto') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+      {{-- Alamat --}}
+      <div>
+        <label for="alamat" class="block text-sm font-semibold text-gray-300 mb-1">Alamat</label>
+        <textarea id="alamat" wire:model.defer="alamat" rows="3"
+          class="w-full bg-gray-700 border border-gray-600 rounded-md px-4 py-3 text-gray-100 resize-none focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+        @error('alamat') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+      </div>
 
-            <!-- Preview Foto jika ada -->
-            @if ($foto)
-                <img src="{{ $foto->temporaryUrl() }}" alt="Preview Foto" class="mt-2 h-24 w-24 object-cover rounded-md border border-gray-600">
-            @elseif ($existingFoto)
-                <img src="{{ asset('storage/' . $existingFoto) }}" alt="Foto Siswa" class="mt-2 h-24 w-24 object-cover rounded-md border border-gray-600">
-            @endif
+      {{-- Kontak --}}
+      <div>
+        <label for="kontak" class="block text-sm font-semibold text-gray-300 mb-1">Kontak</label>
+        <input id="kontak" type="tel" wire:model.defer="kontak" pattern="[0-9]*" inputmode="numeric"
+          class="w-full bg-gray-700 border border-gray-600 rounded-md px-4 py-3 text-gray-100 focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 transition" />
+        @error('kontak') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+      </div>
+
+      {{-- Email --}}
+      <div>
+        <label for="email" class="block text-sm font-semibold text-gray-300 mb-1">Email</label>
+        <input id="email" type="email" wire:model.defer="email"
+          class="w-full bg-gray-700 border border-gray-600 rounded-md px-4 py-3 text-gray-100 focus:outline-none focus:ring-3 focus:ring-blue-500 focus:border-blue-500 transition" />
+        @error('email') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+      </div>
+
+      {{-- Status PKL --}}
+      <div>
+        <label class="block text-sm font-semibold text-gray-300 mb-1">Status PKL</label>
+        <div class="flex gap-6">
+          <label class="inline-flex items-center">
+            <input type="radio" wire:model.defer="status_lapor_pkl" value="no"
+              class="form-radio text-blue-500 bg-gray-800 border-gray-600 focus:ring-blue-500" />
+            <span class="ml-2 text-gray-200">Belum diterima PKL</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input type="radio" wire:model.defer="status_lapor_pkl" value="yes"
+              class="form-radio text-blue-500 bg-gray-800 border-gray-600 focus:ring-blue-500" />
+            <span class="ml-2 text-gray-200">Sudah diterima PKL</span>
+          </label>
         </div>
+        @error('status_lapor_pkl') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
+      </div>
 
-
-        <!-- NIS -->
-        <div>
-            <label for="nis" class="block text-sm font-medium text-gray-300">NIS</label>
-            <input id="nis" type="text" wire:model="nis"
-                class="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 mt-2 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            @error('nis') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
-
-        <!-- Gender -->
-        <div>
-            <label class="block text-sm font-medium text-gray-300 mt-2 mb-1">Gender</label>
-            <div class="flex gap-6">
-                <label class="inline-flex items-center">
-                    <input type="radio" wire:model="gender" value="L" class="form-radio text-blue-500 bg-gray-800 border-gray-700" />
-                    <span class="ml-2">Laki Laki</span>
-                </label>
-                <label class="inline-flex items-center">
-                    <input type="radio" wire:model="gender" value="P" class="form-radio text-blue-500 bg-gray-800 border-gray-700" />
-                    <span class="ml-2">Perempuan</span>
-                </label>
-            </div>
-            @error('gender') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
-
-        <!-- Alamat -->
-        <div>
-            <label for="alamat" class="block text-sm font-medium text-gray-300">Alamat</label>
-            <textarea id="alamat" wire:model="alamat" rows="2"
-                class="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 mt-2 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
-            @error('alamat') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
-
-        <!-- Kontak -->
-        <div>
-            <label for="kontak" class="block text-sm font-medium text-gray-300">Kontak</label>
-            <input id="kontak" type="text" wire:model="kontak"
-                class="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 mt-2 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            @error('kontak') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
-
-        <!-- Email -->
-        <div>
-            <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
-            <input id="email" type="email" wire:model="email"
-                class="w-full bg-gray-800 border border-gray-700 rounded-md px-4 py-2 mt-2 text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
-
-        <!-- Status PKL -->
-        <div>
-            <label class="block text-sm font-medium text-gray-300 mt-2 mb-1">Status PKL</label>
-            <div class="flex gap-6">
-                <label class="inline-flex items-center">
-                    <input type="radio" wire:model="status_lapor_pkl" value="no" class="form-radio text-blue-500 bg-gray-800 border-gray-700" />
-                    <span class="ml-2">Belum diterima PKL</span>
-                </label>
-                <label class="inline-flex items-center">
-                    <input type="radio" wire:model="status_lapor_pkl" value="yes" class="form-radio text-blue-500 bg-gray-800 border-gray-700" />
-                    <span class="ml-2">Sudah diterima PKL</span>
-                </label>
-
-            </div>
-            @error('status_pkl') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
-
-        <div class="flex justify-between">
-            <a href="{{ route('siswa') }}"
-                class="inline-block bg-gray-700 text-gray-300 px-6 py-3 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-200">
-                Cancel
-            </a>
-
-            <button type="submit"
-                class="bg-blue-600 cursor-pointer text-white px-6 py-3 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                Simpan
-            </button>
-        </div>
+      {{-- Tombol --}}
+      <div class="flex justify-between">
+        <a href="{{ route('siswa') }}"
+          class="inline-block bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold px-6 py-3 rounded-md shadow focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-200">
+          Batal
+        </a>
+        <button type="submit"
+          class="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 transition text-white font-semibold px-8 py-3 rounded-md shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-400">
+          Simpan
+        </button>
+      </div>
     </form>
+  </div>
 </div>

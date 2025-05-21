@@ -49,6 +49,42 @@ class Form extends Component
         ];
     }
 
+    public function messages()
+{
+    return [
+        'nama.required' => 'Nama siswa harus diisi.',
+        'nama.string' => 'Nama siswa harus berupa teks.',
+        'nama.max' => 'Nama siswa maksimal 255 karakter.',
+
+        'foto.image' => 'File harus berupa gambar.',
+        'foto.max' => 'Ukuran foto maksimal 2MB.',
+
+        'nis.required' => 'NIS harus diisi.',
+        'nis.string' => 'NIS harus berupa teks.',
+        'nis.max' => 'NIS maksimal 255 karakter.',
+        'nis.unique' => 'NIS sudah terdaftar.',
+
+        'gender.required' => 'Jenis kelamin harus dipilih.',
+        'gender.in' => 'Jenis kelamin harus L atau P.',
+
+        'alamat.required' => 'Alamat harus diisi.',
+        'alamat.string' => 'Alamat harus berupa teks.',
+
+        'kontak.required' => 'Kontak harus diisi.',
+        'kontak.string' => 'Kontak harus berupa teks.',
+
+        'email.required' => 'Email harus diisi.',
+        'email.email' => 'Format email tidak valid.',
+        'email.unique' => 'Email sudah digunakan.',
+
+        'status_lapor_pkl.required' => 'Status laporan PKL harus diisi.',
+        'status_lapor_pkl.in' => 'Status laporan PKL harus bernilai "yes" atau "no".',
+    ];
+}
+
+
+    
+
     // Simpan data
  public function save()
 {
@@ -92,6 +128,17 @@ class Form extends Component
     return redirect()->route('siswa');
 }
 
+public function hapusFoto()
+{
+    $this->foto = null; // Hapus upload sementara dari Livewire
+    $this->existingFoto = null; // Hapus referensi foto lama
+
+    // Jika kamu ingin juga menghapus file lama dari storage (jika sedang edit)
+    // pastikan hanya dilakukan jika `existingFoto` sebelumnya ada
+    if ($this->id && $this->existingFoto && \Storage::disk('public')->exists($this->existingFoto)) {
+        \Storage::disk('public')->delete($this->existingFoto);
+    }
+}
 
     // Render
     public function render()

@@ -11,16 +11,28 @@ class Index extends Component
 { // Memanggil pagination
     use WithPagination;
 
+    protected $paginationTheme = 'tailwind'; // pastikan tema pagination Tailwind dipakai
     // Deklarasi variabel numpage dan search
-    public $numpage = 10;
+    public $numpage = 5;
     public $search;
     public $deleteId = null;
+
+    protected $queryString = [
+        'numpage' => ['except' => 5],
+        'search' => ['except' => ''],
+    ];
 
     // Reset halaman setelah search
     public function updatingSearch()
     {
         $this->resetPage();
     }
+
+    public function updatePageSize($size)
+    {
+        $this->numpage = $size;
+    }
+
 
     public function confirmDelete($id)
 {
@@ -38,12 +50,11 @@ public function delete($id)
     // Method untuk render keseluruhan
     public function render()
     {
-        // Ambil query, logika search query
         $query = Siswa::query();
 
         if (!empty($this->search)) {
             $query->where('nama', 'like', '%' . $this->search . '%')
-                  ->orWhere('nis', 'like', '%' . $this->search . '%');
+                ->orWhere('nis', 'like', '%' . $this->search . '%');
         }
 
         $this->siswaList = $query->paginate($this->numpage);
@@ -53,11 +64,6 @@ public function delete($id)
         ]);
     }
 
-    // Update ukuran halaman (dengan filter tampilan data)
-    public function updatePageSize($size)
-    {
-        $this->numpage = $size;
-    }
     
     // Function gender
     public function ketGender($gender)
