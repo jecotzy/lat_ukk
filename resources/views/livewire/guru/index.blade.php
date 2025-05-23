@@ -58,11 +58,11 @@
                                     <div class="text-gray-400">{{ $guru->email }}</div>
                                 </div>
                             </td>
-                            <td class="px-8 py-4 font-mono text-gray-200">{{ $guru->nip }}</td>
+                            <td class="px-8 py-4 text-gray-200">{{ $guru->nip }}</td>
                             <td class="px-6 py-4 text-gray-200">
                                 {{ $this->ketGender($guru->gender) }}
                             </td>
-                            <td class="px-12 py-4 font-mono text-gray-200">{{ $guru->alamat }}</td>
+                            <td class="px-10 py-4 text-gray-200">{{ $guru->alamat }}</td>
                             <td class="px-6 py-4 text-gray-300">{{ $guru->kontak }}</td>
                             <td class="px-8 py-4 text-right">
                                 <div class="flex justify-end gap-2">

@@ -13,39 +13,71 @@
             </a>
 
             <flux:navlist variant="outline">
-                <flux:navlist.group :heading="__('Platform')" class="grid">
-                    <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                </flux:navlist.group>
-            </flux:navlist>
+    <flux:navlist.group :heading="__('Platform')" class="grid">
+        <flux:navlist.item 
+            icon="home" 
+            :href="route('dashboard')" 
+            :current="request()->routeIs('dashboard')" 
+            wire:navigate>
+            {{ __('Dashboard') }}
+        </flux:navlist.item>
+    </flux:navlist.group>
+</flux:navlist>
 
-            <flux:navlist.item 
-                icon="user-circle" 
-                :href="route('siswa')" 
-                :current="request()->routeIs('siswa*')" 
-                wire:navigate>
-                {{ __('Siswa') }}
-            </flux:navlist.item>
-            <flux:navlist.item 
-                icon="academic-cap" 
-                :href="route('guru')" 
-                :current="request()->routeIs('guru*')" 
-                wire:navigate>
-                {{ __('Guru') }}
-            </flux:navlist.item>
-            <flux:navlist.item 
-                icon="building-office-2" 
-                :href="route('industri')" 
-                :current="request()->routeIs('industri*')" 
-                wire:navigate>
-                {{ __('industri') }}
-            </flux:navlist.item>
-            <flux:navlist.item 
-                icon="briefcase" 
-                :href="route('pkl')" 
-                :current="request()->routeIs('pkl*')" 
-                wire:navigate>
-                {{ __('Pkl') }}
-            </flux:navlist.item>
+{{-- Hanya untuk Super_Admin --}}
+@hasrole('super_admin')
+    <flux:navlist.item 
+        icon="user-circle" 
+        :href="route('siswa')" 
+        :current="request()->routeIs('siswa*')" 
+        wire:navigate>
+        {{ __('Siswa') }}
+    </flux:navlist.item>
+
+    <flux:navlist.item 
+        icon="academic-cap" 
+        :href="route('guru')" 
+        :current="request()->routeIs('guru*')" 
+        wire:navigate>
+        {{ __('Guru') }}
+    </flux:navlist.item>
+
+    <flux:navlist.item 
+        icon="building-office-2" 
+        :href="route('industri')" 
+        :current="request()->routeIs('industri*')" 
+        wire:navigate>
+        {{ __('Industri') }}
+    </flux:navlist.item>
+
+    <flux:navlist.item 
+        icon="briefcase" 
+        :href="route('pkl')" 
+        :current="request()->routeIs('pkl*')" 
+        wire:navigate>
+        {{ __('PKL') }}
+    </flux:navlist.item>
+@endhasrole
+
+{{-- Hanya untuk Siswa --}}
+@hasrole('Siswa')
+    <flux:navlist.item 
+        icon="building-office-2" 
+        :href="route('industri')" 
+        :current="request()->routeIs('industri*')" 
+        wire:navigate>
+        {{ __('Industri') }}
+    </flux:navlist.item>
+
+    <flux:navlist.item 
+        icon="briefcase" 
+        :href="route('pkl')" 
+        :current="request()->routeIs('pkl*')" 
+        wire:navigate>
+        {{ __('PKL') }}
+    </flux:navlist.item>
+@endhasrole
+
 
             <flux:spacer />
 

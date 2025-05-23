@@ -52,7 +52,7 @@
         <div class="col-span-6 row-start-4">
             <div class="bg-gray-800/50 rounded-lg p-4 shadow-sm text-center">
                 <h3 class="font-semibold text-lg text-gray-300">Status PKL</h3>
-                <p class="text-white mt-2">{{ $this->ketStatusPKL($siswa->status_pkl) }}</p>
+                <p class="text-white mt-2">{{ $this->ketStatusPKL($siswa->status_lapor_pkl) }}</p>
             </div>
         </div>
     </div>

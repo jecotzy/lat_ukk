@@ -57,24 +57,20 @@ class Index extends Component
     }
 
     public function render()
-    {
-        if ($this->siswa) {
-            $query = Pkl::with(['siswa', 'industri', 'guru'])
-                ->where('siswa_id', $this->siswa->id);
+{
+    $query = Pkl::with(['siswa', 'industri', 'guru']);
 
-            if (!empty($this->search)) {
-                $query->whereHas('industri', function($q) {
-                    $q->where('nama', 'like', '%' . $this->search . '%');
-                });
-            }
-
-            $pklList = $query->paginate($this->numpage);
-        } else {
-            $pklList = Pkl::whereRaw('0 = 1')->paginate($this->numpage);
-        }
-
-        return view('livewire.pkl.index', [
-            'pklList' => $pklList,
-        ]);
+    if (!empty($this->search)) {
+        $query->whereHas('industri', function($q) {
+            $q->where('nama', 'like', '%' . $this->search . '%');
+        });
     }
+
+    $pklList = $query->paginate($this->numpage);
+
+    return view('livewire.pkl.index', [
+        'pklList' => $pklList,
+    ]);
+}
+
 }

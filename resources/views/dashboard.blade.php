@@ -25,46 +25,10 @@
         </div>
 
         {{-- Line Chart: Aktivitas per Hari --}}
-<div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
-    <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Aktivitas 7 Hari Terakhir</h2>
-    <canvas id="activityLineChart" height="100"></canvas>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('activityLineChart').getContext('2d');
-    const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: @json($chartData['labels']),
-            datasets: [{
-                label: 'Jumlah Aktivitas',
-                data: @json($chartData['counts']),
-                borderColor: '#3b82f6',
-                backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                tension: 0.3,
-                fill: true,
-                pointBackgroundColor: '#3b82f6'
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        stepSize: 1
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                }
-            }
-        }
-    });
-</script>
-
+        <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
+            <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-4">Aktivitas 7 Hari Terakhir</h2>
+            <canvas id="activityLineChart" height="100"></canvas>
+        </div>
 
         {{-- Latest Activity --}}
         <div class="overflow-auto rounded-lg border border-gray-200 bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800">
@@ -100,4 +64,42 @@
             </table>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('activityLineChart')?.getContext('2d');
+        if (!ctx) return;
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @json($chartData['labels']),
+                datasets: [{
+                    label: 'Jumlah Aktivitas',
+                    data: @json($chartData['counts']),
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    tension: 0.3,
+                    fill: true,
+                    pointBackgroundColor: '#3b82f6'
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    });
+</script>
 </x-layouts.app>
