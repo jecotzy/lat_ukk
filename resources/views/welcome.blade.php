@@ -36,6 +36,20 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+
+        @keyframes gradient-move {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+        .animate-gradient-move {
+            background-size: 200% 200%;
+            animation: gradient-move 8s ease infinite;
+        }
+
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-900 via-gray-900 to-gray-900 text-gray-200 antialiased min-h-screen overflow-x-hidden">
@@ -47,15 +61,24 @@
     </div>
 
     {{-- Navigation --}}
-    <nav class="container mx-auto px-6 py-5 flex justify-between items-center relative z-10">
-        <div class="flex items-center space-x-2 animate__animated animate__fadeInDown">
-            <img src="{{ asset('storage/writing.png') }}" alt="Writing Icon" class="w-8 h-8 filter invert" />
+    <nav class="container mx-auto px-6 py-5 flex justify-between items-center relative z-10 animate__animated animate__fadeInDown">
+        <div class="flex items-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" class="w-8 h-8">
+                <defs>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                </linearGradient>
+                </defs>
+                <path stroke="url(#grad1)" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25M9 16.5v.75m3-3v3M15 12v5.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
             <span class="text-2xl font-bold gradient-text">LaporPak</span>
         </div>
+
         <div class="hidden md:flex space-x-8">
             <a href="#features" class="text-gray-300 hover:text-white transition duration-300 font-medium">Fitur</a>
             <a href="#about" class="text-gray-300 hover:text-white transition duration-300 font-medium">Tentang</a>
-            <a href="#contact" class="text-gray-300 hover:text-white transition duration-300 font-medium">Kontak</a>
+            <a href="#kontak    " class="text-gray-300 hover:text-white transition duration-300 font-medium">Kontak</a>
         </div>
         <div class="flex items-center space-x-4">
             <a href="{{ route('login') }}" class="px-5 py-2 text-blue-400 font-medium hover:text-blue-300 transition duration-300">Masuk</a>
@@ -71,8 +94,8 @@
     <section class="container mx-auto px-10 pt-0 md:py-20 flex flex-col md:flex-row items-center justify-between gap-20 relative z-10">
         <div class="flex flex-col md:w-1/2 text-center md:text-left" data-aos="fade-right" data-aos-duration="800">
             <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                <span class="gradient-text">Lapor Pak</span><br>
-                Sistem PKL <span class="text-white">Modern</span>
+                <span class="gradient-text">Lapor Pak</span>
+                <span class="text-white block text-2xl md:text-5xl">Mudah & Modern</span>
             </h1>
             <p class="text-lg md:text-xl text-gray-400 mb-8 leading-relaxed max-w-lg">
                 Platform digital terintegrasi untuk mengelola seluruh proses Praktik Kerja Lapangan jurusan Sistem Informasi Jaringan dan Aplikasi dengan mudah dan efektif.
@@ -97,17 +120,50 @@
             </div>
         </div>
 
-        <div class="flex-shrink-0 flex items-center justify-center w-full md:w-1/2" data-aos="fade-left" data-aos-duration="800">
-            <div class="relative w-[350px] h-[500px] md:w-[400px] md:h-[500px]"> <!-- ukuran diperbesar -->
-                <div class="absolute inset-0 mx-2 my-4 bg-blue-500/10 rounded-full blur-xl animate-pulse"></div>
-                <div class="relative hero-glass rounded-xl shadow-2xl flex items-center justify-center overflow-hidden py-2 px-0 w-fit h-fit">
-                    <img src="{{ asset('storage/laptop3.jpg') }}" alt="Boss Animation" 
-                        class="w-[350px] h-[500px] object-contain transition-transform duration-500 hover:scale-110" />
-                </div>
+        <div class="flex-shrink-0 flex items-center justify-center w-full md:w-1/2 relative z-10" data-aos="fade-left" data-aos-duration="800">
+            <div class="relative w-[350px] h-[500px] md:w-[400px] md:h-[500px] group">
+                <!-- Gradient Border Effect -->
+                <div class="absolute inset-0 rounded-[2rem] animate-gradient-move bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 opacity-20 blur-2xl transition-all duration-700 group-hover:opacity-30 group-hover:blur-[60px]"></div>
 
+                <!-- Hero Image Container -->
+                <div class="relative z-10 hero-glass rounded-3xl shadow-2xl flex items-center justify-center overflow-hidden py-2 px-0 w-fit h-fit transition-transform duration-700 group-hover:scale-105">
+                    <img src="{{ asset('storage/laptop3.jpg') }}" alt="Boss Animation" 
+                        class="w-[350px] h-[500px] object-contain transition-transform duration-700 ease-in-out group-hover:scale-110 rounded-4xl" />
+                </div>
             </div>
         </div>
     </section>
+
+<!-- About Section -->
+<section id="about" class="py-10 bg-gray-800/50 backdrop-blur-md rounded-3xl container mx-auto px-6 md:px-12 relative z-10" data-aos="fade-up" data-aos-duration="1000">
+    <div class="text-center mb-12">
+        <h2 class="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 leading-snug drop-shadow-md">
+            Tentang Lapor Pak
+        </h2>
+        <div class="mt-4 w-20 h-1 mx-auto bg-cyan-400 rounded-full"></div>
+    </div>
+    
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10">
+        <!-- Icon / Illustration -->
+        <div class="flex-shrink-0 w-full md:w-1/2">
+            <img src="{{ asset('storage/think.png') }}" alt="Lapor Pak Icon" class="w-64 mx-auto animate-fade-in-up" loading="lazy">
+        </div>
+
+        <!-- Description -->
+        <div class="w-full md:w-1/2 text-gray-300 text-lg leading-relaxed space-y-5">
+            <p>
+                <strong class="text-cyan-300">Lapor Pak</strong> adalah platform digital modern yang dirancang khusus untuk mengelola <span class="text-white font-semibold">Praktik Kerja Lapangan (PKL)</span> di jurusan Sistem Informasi Jaringan dan Aplikasi.
+            </p>
+            <p>
+                Kami menyediakan solusi terpadu — mulai dari <span class="text-white font-semibold">pendaftaran siswa</span>, <span class="text-white font-semibold">pemantauan industri mitra</span>, hingga <span class="text-white font-semibold">penilaian akhir</span> — semua dapat dilakukan secara efisien.
+            </p>
+            <p>
+                Dengan antarmuka yang intuitif dan fitur lengkap, Lapor Pak mendukung proses pelaporan dan administrasi PKL agar lebih mudah dan terstruktur.
+            </p>
+        </div>
+    </div>
+</section>
+
 
     {{-- Features Section --}}
     <section id="features" class="py-20 relative z-10">
@@ -162,15 +218,15 @@
         <div class="container mx-auto px-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                 <div class="p-6" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="text-4xl font-bold text-blue-400 mb-2 animate-count" data-count="500">0</div>
+                    <div class="text-4xl font-bold text-blue-400 mb-2 animate-count">100+</div>
                     <div class="text-gray-400">Siswa Terdaftar</div>
                 </div>
                 <div class="p-6" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="text-4xl font-bold text-blue-400 mb-2 animate-count" data-count="50">0</div>
+                    <div class="text-4xl font-bold text-blue-400 mb-2 animate-count">50+</div>
                     <div class="text-gray-400">Industri Mitra</div>
                 </div>
                 <div class="p-6" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="text-4xl font-bold text-blue-400 mb-2 animate-count" data-count="100">100</div>
+                    <div class="text-4xl font-bold text-blue-400 mb-2 animate-count">100+</div>
                     <div class="text-gray-400">Kepuasan Pengguna</div>
                 </div>
                 <div class="p-6" data-aos="zoom-in" data-aos-delay="400">
@@ -194,6 +250,128 @@
             </div>
         </div>
     </section>
+
+    <!-- Kontak -->
+    <section id="kontak" class="bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 py-24 relative overflow-hidden">
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full filter blur-3xl animate-float-slow opacity-20"></div>
+        <div class="absolute bottom-1/3 right-1/4 w-72 h-72 bg-purple-500/10 rounded-full filter blur-3xl animate-float-medium opacity-20"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-20" data-aos="fade-up" data-aos-duration="800">
+            <h3 class="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 mb-4 leading-relaxed">
+                Hubungi Kami
+            </h3>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                Punya pertanyaan atau butuh bantuan? Tim kami siap membantu Anda kapan saja.
+            </p>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            <!-- Email Card -->
+            <div class="group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 hover:border-blue-500/30 transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-blue-600/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-white mb-2">Email</h4>
+                    <a href="mailto:info@laporpak.com" class="text-blue-400 hover:text-blue-300 transition-colors duration-300 inline-block">
+                        <span class="hover:underline">info@laporpak.com</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Phone Card -->
+            <div class="group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 hover:border-green-500/30 transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-green-600/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-white mb-2">Telepon</h4>
+                    <a href="tel:+6281234567890" class="text-green-400 hover:text-green-300 transition-colors duration-300 inline-block">
+                        <span class="hover:underline">+62 812-3456-7890</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Address Card -->
+            <div class="group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 hover:border-purple-500/30 transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-purple-600/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-white mb-2">Alamat</h4>
+                    <p class="text-gray-400 hover:text-gray-300 transition-colors duration-300">
+                        Jl. Stm Pembangunan<br>
+                        Sleman , Yogyakarta
+                    </p>
+                    <button class="mt-3 text-purple-400 hover:text-purple-300 text-sm font-medium flex items-center transition-colors duration-300">
+                        Lihat di Peta
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Social Media Card -->
+            <div class="group relative bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 hover:border-pink-500/30 transition-all duration-500 hover:-translate-y-2 shadow-xl hover:shadow-2xl">
+                <div class="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-pink-600/10 opacity-0 group-hover:opacity-100 rounded-2xl transition-opacity duration-500"></div>
+                <div class="relative z-10">
+                    <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center mb-6 shadow-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-white mb-4">Media Sosial</h4>
+                    <div class="flex space-x-4">
+                        <a href="https://facebook.com/laporpak" target="_blank" class="w-10 h-10 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow hover:shadow-lg" aria-label="Facebook">
+                            <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M22 12c0-5.522-4.477-10-10-10S2 6.478 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54v-2.89h2.54v-2.207c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.462h-1.26c-1.243 0-1.63.772-1.63 1.562v1.878h2.773l-.443 2.89h-2.33v6.987C18.343 21.128 22 16.991 22 12z"/>
+                            </svg>
+                        </a>
+                        <a href="https://twitter.com/laporpak" target="_blank" class="w-10 h-10 bg-gray-700 hover:bg-blue-400 rounded-full flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow hover:shadow-lg" aria-label="Twitter">
+                            <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
+                            </svg>
+                        </a>
+                        <a href="https://instagram.com/laporpak" target="_blank" class="w-10 h-10 bg-gray-700 hover:bg-gradient-to-br hover:from-pink-500 hover:to-orange-400 rounded-full flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow hover:shadow-lg" aria-label="Instagram">
+                            <svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                <path d="M16 11.37a4 4 0 11-4.5-4.5 4 4 0 014.5 4.5z"/>
+                                <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/>
+                            </svg>
+                        </a>
+                        <a href="https://linkedin.com/company/laporpak" target="_blank" class="w-10 h-10 bg-gray-700 hover:bg-blue-700 rounded-full flex items-center justify-center transition-all duration-300 transform hover:-translate-y-1 shadow hover:shadow-lg" aria-label="LinkedIn">
+                            <svg class="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
 
     {{-- Footer --}}
     <footer class="bg-gray-900/50 backdrop-blur-sm border-t border-gray-800 py-12 relative z-10">
@@ -239,29 +417,6 @@
         AOS.init({
             duration: 800,
             once: true
-        });
-
-        // Animated counter for stats
-        const counters = document.querySelectorAll('.animate-count');
-        const speed = 200;
-        
-        counters.forEach(counter => {
-            const target = +counter.getAttribute('data-count');
-            const count = +counter.innerText;
-            const increment = target / speed;
-            
-            if(count < target) {
-                const updateCount = () => {
-                    const currentCount = +counter.innerText;
-                    if(currentCount < target) {
-                        counter.innerText = Math.ceil(currentCount + increment);
-                        setTimeout(updateCount, 1);
-                    } else {
-                        counter.innerText = target;
-                    }
-                };
-                updateCount();
-            }
         });
     </script>
 </body>
