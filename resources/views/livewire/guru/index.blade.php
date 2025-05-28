@@ -92,51 +92,59 @@
                 </tbody>
             </table>
             @if ($deleteId)
-<div class="fixed inset-0 bg-gray-900/80 backdrop-blur-lg flex items-center justify-center z-50">
+            <div class="fixed inset-0 bg-gray-900/80 backdrop-blur-lg flex items-center justify-center z-50">
 
-    <div class="bg-gray-800 p-6 rounded shadow-lg text-white">
-        <p>Yakin ingin menghapus data ini?</p>
-        <div class="mt-4 flex justify-end space-x-3">
-            <button
-                wire:click="delete({{ $deleteId }})"
-                class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded transition-colors duration-200"
-            >
-                Ya
-            </button>
-            <button
-                wire:click="$set('deleteId', null)"
-                class="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded transition-colors duration-200"
-            >
-                Batal
-            </button>
-        </div>
-    </div>
-</div>
+                <div class="bg-gray-800 p-6 rounded shadow-lg text-white">
+                    <p>Yakin ingin menghapus data ini?</p>
+                    <div class="mt-4 flex justify-end space-x-3">
+                        <button
+                            wire:click="delete({{ $deleteId }})"
+                            class="bg-red-600 hover:bg-red-500 px-4 py-2 rounded transition-colors duration-200"
+                        >
+                            Ya
+                        </button>
+                        <button
+                            wire:click="$set('deleteId', null)"
+                            class="bg-gray-600 hover:bg-gray-500 px-4 py-2 rounded transition-colors duration-200"
+                        >
+                            Batal
+                        </button>
+                    </div>
+                </div>
+            </div>
 
 
-@endif
+            @endif
         </div>
     </div>
 
     <!-- Pagination -->
     <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex items-center space-x-2">
-            <span class="text-sm text-gray-400">Menampilkan</span>
-            <select wire:model="numpage" wire:change="updatePageSize($event.target.value)" id="perPage"
-                        class="px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 rounded-md">
-                    <option value="1">1</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="{{ $guruList->total() }}">semua</option>
-            </select>
-            <span class="text-sm text-gray-700 dark:text-gray-200">data per halaman</span>
+        <div class="inline-flex items-center border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden shadow-sm
+            bg-gray-800 dark:bg-gray-900 text-gray-200 dark:text-gray-300
+            focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition text-sm">
+            <span class="px-4 py-2 font-medium border-r border-gray-700 dark:border-gray-700 select-none">
+                Menampilkan
+            </span>
 
-            <span class="text-sm text-gray-400">data per halaman</span>
+            <select wire:model="numpage" wire:change="updatePageSize($event.target.value)" id="perPage"
+                    class="px-4 py-2 bg-gray-900 dark:bg-gray-800 text-gray-200 dark:text-gray-300
+                            focus:outline-none focus:ring-0 cursor-pointer appearance-none">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="{{ $guruList->total() }}">semua</option>
+            </select>
+
+            <span class="px-4 py-2 font-medium border-l border-gray-700 dark:border-gray-700 select-none">
+                data per halaman
+            </span>
         </div>
+
         <div class="text-white">
-        {{ $guruList->links() }}
+            <!-- Link pagination otomatis dari Laravel -->
+            {{ $guruList->links() }}
         </div>
     </div>
 </div>

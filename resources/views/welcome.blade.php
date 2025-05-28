@@ -127,9 +127,10 @@
 
                 <!-- Hero Image Container -->
                 <div class="relative z-10 hero-glass rounded-3xl shadow-2xl flex items-center justify-center overflow-hidden py-2 px-0 w-fit h-fit transition-transform duration-700 group-hover:scale-105">
-                    <img src="{{ asset('storage/laptop3.jpg') }}" alt="Boss Animation" 
+                    <img src="https://images.unsplash.com/photo-1685517913166-1b97a48b8d0c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="laptop3"
                         class="w-[350px] h-[500px] object-contain transition-transform duration-700 ease-in-out group-hover:scale-110 rounded-4xl" />
                 </div>
+
             </div>
         </div>
     </section>
@@ -146,7 +147,7 @@
     <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center gap-10">
         <!-- Icon / Illustration -->
         <div class="flex-shrink-0 w-full md:w-1/2">
-            <img src="{{ asset('storage/think.png') }}" alt="Lapor Pak Icon" class="w-64 mx-auto animate-fade-in-up" loading="lazy">
+            <img src="https://i.ibb.co/QjK4Cb1m/think.png" alt="Lapor Pak Icon" class="w-64 mx-auto animate-fade-in-up" loading="lazy"/>
         </div>
 
         <!-- Description -->
@@ -378,7 +379,15 @@
         <div class="container mx-auto px-6">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="flex items-center space-x-2 mb-6 md:mb-0">
-                    <img src="{{ asset('storage/writing.png') }}" alt="Writing Icon" class="w-8 h-8 filter invert" />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.5" class="w-8 h-8">
+                        <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+                        </linearGradient>
+                        </defs>
+                        <path stroke="url(#grad1)" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25M9 16.5v.75m3-3v3M15 12v5.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                    </svg>
                     <span class="text-2xl font-bold gradient-text">LaporPak</span>
                 </div>
                 <div class="flex space-x-6">

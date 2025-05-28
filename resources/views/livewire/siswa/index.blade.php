@@ -1,5 +1,6 @@
 <div class="p-6 bg-gray-900 min-h-screen text-gray-100 space-y-6">
-    <!-- Header Section -->
+
+    <!-- Header Section: Judul dan Tombol Tambah serta Pencarian -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
             <h1 class="text-2xl font-bold text-white">Daftar Siswa</h1>
@@ -7,10 +8,12 @@
         </div>
 
         <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+            <!-- Search Bar: Filter data siswa -->
             <input wire:model.live.debounce.300ms="search" type="text"
                 class="w-full md:w-64 px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
                 placeholder="Cari siswa...">
 
+            <!-- Tombol Tambah Siswa -->
             <a href="{{ route('siswa.create') }}"
                 class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md text-center">
                 Tambah Siswa
@@ -18,14 +21,14 @@
         </div>
     </div>
 
-    <!-- Notification -->
+    <!-- Notification: Tampilkan pesan sukses dari session -->
     @if (session()->has('message'))
         <div class="p-4 bg-green-900/50 border-l-4 border-green-500 text-green-100 rounded shadow">
             {{ session('message') }}
         </div>
     @endif
 
-    <!-- Table Section -->
+    <!-- Table Section: Tabel daftar siswa -->
     <div class="bg-gray-800/50 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border border-gray-700/50">
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-700/50 text-sm">
@@ -40,8 +43,10 @@
                     </tr>
                 </thead>
                 <tbody class="bg-gray-800/30 divide-y divide-gray-700/50">
+                    <!-- Loop data siswa -->
                     @forelse ($siswaList as $siswa)
                         <tr class="hover:bg-gray-700/50 transition">
+                            <!-- Kolom Nama dengan foto profil atau inisial -->
                             <td class="px-6 py-4 whitespace-nowrap flex items-center gap-3">
                                 @if ($siswa->foto)
                                     <img src="{{ asset('storage/' . $siswa->foto) }}"
@@ -57,15 +62,20 @@
                                     <div class="text-gray-400">{{ $siswa->email }}</div>
                                 </div>
                             </td>
+
                             <td class="px-6 py-4 text-gray-200">{{ $siswa->nis }}</td>
                             <td class="px-6 py-4 text-gray-200">{{ $this->ketGender($siswa->gender) }}</td>
                             <td class="px-7 py-4 text-gray-300">{{ $siswa->kontak }}</td>
+
+                            <!-- Status PKL dengan badge warna dinamis -->
                             <td class="px-5 py-4">
                                 <span class="px-3 py-1 text-xs font-semibold rounded-full 
                                     {{ $siswa->status_lapor_pkl == 'yes' ? 'bg-green-900/50 text-green-300' : 'bg-amber-900/50 text-amber-300' }}">
                                     {{ $this->ketStatusPKL($siswa->status_lapor_pkl) }}
                                 </span>
                             </td>
+
+                            <!-- Kolom Aksi: Tombol View, Edit, Delete -->
                             <td class="px-6 py-4 text-right">
                                 <div class="flex justify-end gap-2">
                                     <a href="{{ route('siswa.show', $siswa->id) }}"
@@ -78,6 +88,7 @@
                             </td>
                         </tr>
                     @empty
+                        <!-- Pesan jika data siswa kosong -->
                         <tr>
                             <td colspan="6" class="px-6 py-8 text-center text-gray-400">
                                 <p class="text-lg mb-1">Tidak ada data siswa ditemukan</p>
@@ -88,7 +99,7 @@
                 </tbody>
             </table>
 
-            <!-- Konfirmasi Delete -->
+            <!-- Modal Konfirmasi Delete -->
             @if ($deleteId)
                 <div class="fixed inset-0 bg-gray-900/80 backdrop-blur-lg flex items-center justify-center z-50">
                     <div class="bg-gray-800 p-6 rounded shadow-lg text-white">
@@ -109,22 +120,34 @@
         </div>
     </div>
 
-    <!-- Pagination -->
+    <!-- Pagination dan Pengaturan Jumlah Data per Halaman -->
     <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div class="flex items-center space-x-2">
-            <span class="text-sm text-gray-400">Menampilkan</span>
+        <div class="inline-flex items-center border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden shadow-sm
+            bg-gray-800 dark:bg-gray-900 text-gray-200 dark:text-gray-300
+            focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition text-sm">
+            <span class="px-4 py-2 font-medium border-r border-gray-700 dark:border-gray-700 select-none">
+                Menampilkan
+            </span>
+
             <select wire:model="numpage" wire:change="updatePageSize($event.target.value)" id="perPage"
-                    class="px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 rounded-md">
+                    class="px-4 py-2 bg-gray-900 dark:bg-gray-800 text-gray-200 dark:text-gray-300
+                            focus:outline-none focus:ring-0 cursor-pointer appearance-none">
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
                 <option value="{{ $siswaList->total() }}">semua</option>
             </select>
-            <span class="text-sm text-gray-700 dark:text-gray-400">data per halaman</span>
+
+            <span class="px-4 py-2 font-medium border-l border-gray-700 dark:border-gray-700 select-none">
+                data per halaman
+            </span>
         </div>
+
         <div class="text-white">
+            <!-- Link pagination otomatis dari Laravel -->
             {{ $siswaList->links() }}
         </div>
     </div>
+
 </div>

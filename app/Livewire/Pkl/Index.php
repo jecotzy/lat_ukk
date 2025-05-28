@@ -17,7 +17,9 @@ class Index extends Component
     public $siswa;
     public $search;
     public $deleteId = null;
-    public $numpage = 10;
+    public $numpage = 5;
+    protected $paginationTheme = 'tailwind'; // pastikan tema pagination Tailwind dipakai
+    // Deklarasi variabel numpage dan search
 
     public function mount()
     {
@@ -28,6 +30,11 @@ class Index extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+
+    public function updatePageSize($size)
+    {
+        $this->numpage = $size;
     }
 
     public function confirmDelete($id)

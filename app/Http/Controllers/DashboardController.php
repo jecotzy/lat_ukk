@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Guru;
 use App\Models\Industri;
+use App\Models\Pkl;
 use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -17,6 +18,8 @@ class DashboardController extends Controller
     $jumlahSiswa = Siswa::count();
     $jumlahGuru = Guru::count();
     $jumlahIndustri = Industri::count();
+    $jumlahSiswaLapor = Siswa::where('status_lapor_pkl', 'yes')->count();
+    $persenSiswaLapor = $jumlahSiswa > 0 ? round(($jumlahSiswaLapor / $jumlahSiswa) * 100, 1) : 0;
 
     $latestActivity = ActivityLog::with('user')
         ->latest()
@@ -51,6 +54,8 @@ class DashboardController extends Controller
         'jumlahSiswa',
         'jumlahGuru',
         'jumlahIndustri',
+        'jumlahSiswaLapor',
+        'persenSiswaLapor',
         'latestActivity',
         'chartData'
     ));
