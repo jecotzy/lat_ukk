@@ -1,24 +1,24 @@
 <?php
 
 namespace App\Livewire\Guru;
+
 use App\Models\Guru;
 use Livewire\WithPagination;
-
-
 use Livewire\Component;
 
 class Index extends Component
-{ // Memanggil pagination
+{
+    // Menggunakan fitur pagination dari Livewire
     use WithPagination;
 
-    protected $paginationTheme = 'tailwind'; // pastikan tema pagination Tailwind dipakai
-    // Deklarasi variabel numpage dan search
-    public $numpage = 5;
-    public $search;
-    public $deleteId = null;
+    // Menentukan tema pagination yang digunakan (Tailwind CSS)
+    protected $paginationTheme = 'tailwind';
 
+    // Variabel publik yang dapat digunakan di view
+    public $numpage = 5; // Jumlah data per halaman
+    public $search; // Kata kunci pencarian
+    public $deleteId = null; // ID guru yang akan dihapus (untuk konfirmasi)
 
-    // Reset halaman setelah search
     public function updatingSearch()
     {
         $this->resetPage();
@@ -27,42 +27,46 @@ class Index extends Component
     public function updatePageSize($size)
     {
         $this->numpage = $size;
+        $this->resetPage();
     }
 
 
     public function confirmDelete($id)
-{
-    $this->deleteId = $id;
-}
-    // Menghapus data
-public function delete($id)
-{
-    Guru::findOrFail($id)->delete();
-    session()->flash('message', 'Data guru berhasil dihapus.');
-    $this->deleteId = null; // Tutup modal setelah delete
-}
+    {
+        $this->deleteId = $id;
+    }
 
+    public function delete($id)
+    {
+        Guru::findOrFail($id)->delete(); // Hapus data
+        session()->flash('message', 'Data guru berhasil dihapus.');
+        $this->deleteId = null; // Tutup modal konfirmasi
+        $this->resetPage();
+    }
 
-    // Method untuk render keseluruhan
     public function render()
     {
-        $query = Guru::query();
+        $query = Guru::query(); // Inisialisasi query builder
 
+        // Jika ada kata pencarian, filter berdasarkan nama, NIP, atau email
         if (!empty($this->search)) {
             $query->where('nama', 'like', '%' . $this->search . '%')
                 ->orWhere('nip', 'like', '%' . $this->search . '%')
                 ->orWhere('email', 'like', '%' . $this->search . '%');
         }
 
-        $this->guruList = $query->paginate($this->numpage);
+        // Paginate hasil pencarian atau seluruh data
+        $guruList = $query->paginate($this->numpage);
 
+        // Kirim data ke view 'livewire.guru.index'
         return view('livewire.guru.index', [
-            'guruList' => $this->guruList,
+            'guruList' => $guruList,
         ]);
     }
 
-    
-    // Function gender
+    /**
+     * Fungsi untuk mengubah kode gender menjadi label teks.
+     */
     public function ketGender($gender)
     {
         if ($gender === 'L') {
@@ -73,5 +77,4 @@ public function delete($id)
             return 'Status tidak diketahui';
         }
     }
-
 }

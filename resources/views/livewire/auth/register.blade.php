@@ -1,4 +1,4 @@
-<div class="relative bg-gradient-to-br from-gray-900/90 via-gray-900/80 to-gray-900/90 p-10 rounded-3xl shadow-2xl max-w-md w-full mx-auto text-gray-100 overflow-hidden">
+<div class="relative bg-gradient-to-br from-gray-900/90 via-gray-900/80 to-gray-900/90 p-10 rounded-3xl shadow-2xl max-w-md w-full mx-auto text-gray-100 overflow-hidden mt-7">
     <!-- Blur floating circles -->
     <div class="absolute top-1/4 left-1/4 w-36 h-36 bg-blue-500/20 rounded-full filter blur-2xl animate-float-slow opacity-25 pointer-events-none"></div>
     <div class="absolute bottom-1/3 right-1/4 w-44 h-44 bg-purple-500/20 rounded-full filter blur-2xl animate-float-medium opacity-25 pointer-events-none"></div>

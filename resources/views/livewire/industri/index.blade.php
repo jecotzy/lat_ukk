@@ -14,10 +14,12 @@
                 placeholder="Cari industri...">
 
             <!-- Tombol Tambah Industri -->
-            <a href="{{ route('industri.create') }}"
-                class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md text-center">
-                Tambah Industri
-            </a>
+            @hasanyrole('super_admin|Siswa')
+                <a href="{{ route('industri.create') }}"
+                    class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md text-center">
+                    Tambah Industri
+                </a>
+            @endhasanyrole
         </div>
     </div>
 
@@ -40,9 +42,9 @@
                         <th class="px-5 py-3 text-left font-semibold text-gray-300 uppercase">Kontak</th>
                         <th class="px-5 py-3 text-left font-semibold text-gray-300 uppercase">Email</th>
                         <th class="px-5 py-3 text-left font-semibold text-gray-300 uppercase">Website</th>
-                        @hasrole('super_admin')
+                        @hasanyrole('super_admin|Siswa')
                         <th class="px-5 py-3 text-mid font-semibold text-gray-300 uppercase">Aksi</th>
-                        @endhasrole
+                        @endhasanyrole
                     </tr>
                 </thead>
                 <tbody class="bg-gray-800/30 divide-y divide-gray-700/50">
@@ -58,7 +60,7 @@
                                     {{ $industri->website }}
                                 </a>
                             </td>
-                            @hasrole('super_admin') 
+                            @hasanyrole('super_admin|Siswa') 
                             <!-- Tombol aksi hanya untuk super admin -->
                             <td class="px-5 py-4 text-right">
                                 <div class="flex justify-end gap-2">
@@ -76,7 +78,7 @@
                                     </button>
                                 </div>
                             </td>
-                            @endhasrole
+                            @endhasanyrole
                         </tr>
                     @empty
                         <tr>
@@ -125,8 +127,8 @@
             </span>
 
             <select wire:model="numpage" wire:change="updatePageSize($event.target.value)" id="perPage"
-                    class="px-4 py-2 bg-gray-900 dark:bg-gray-800 text-gray-200 dark:text-gray-300
-                            focus:outline-none focus:ring-0 cursor-pointer appearance-none">
+                class="px-4 py-2 bg-gray-900 dark:bg-gray-800 text-gray-200 dark:text-gray-300
+                focus:outline-none focus:ring-0 cursor-pointer appearance-none">
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="25">25</option>

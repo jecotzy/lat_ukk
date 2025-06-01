@@ -36,12 +36,22 @@ class Login extends Component
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'email' => 'Email kamu belum terdaftar',
             ]);
         }
 
         RateLimiter::clear($this->throttleKey());
         Session::regenerate();
+
+        // Hanya izinkan Siswa guru dan admin
+        if (! Auth::user()->hasAnyRole(['Siswa', 'Guru', 'super_admin'])) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => 'Anda tidak memiliki akses, Silakan hubungi admin',
+            ]);
+        }
+
 
         $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }

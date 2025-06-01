@@ -15,6 +15,9 @@ class Industri extends Model
         'nama', 'bidang_usaha', 'alamat', 'kontak', 'email', 'website'
     ];
 
+    /**
+     * Relasi one-to-many: satu industri bisa menerima banyak siswa PKL
+     */
     public function pkls()
     {
         return $this->hasMany(Pkl::class);

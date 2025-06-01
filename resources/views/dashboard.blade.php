@@ -16,7 +16,7 @@
         <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
             @php
                 $cards = [
-                    ['label' => 'Total Siswa', 'count' => $jumlahSiswa, 'color' => 'blue', 'note' => "$persenSiswaLapor% sudah lapor"],
+                    ['label' => 'Total Siswa', 'count' => $jumlahSiswa, 'color' => 'blue', 'note' => "$persenSiswaLapor% sudah lapor PKL"],
                     ['label' => 'Total Guru', 'count' => $jumlahGuru, 'color' => 'green'],
                     ['label' => 'Total Industri', 'count' => $jumlahIndustri, 'color' => 'yellow'],
                 ];
@@ -34,23 +34,37 @@
 
                     <div class="relative z-10">
                         <div class="flex items-center gap-3">
-                            <div class="rounded-lg bg-{{ $card['color'] }}-100/50 p-2 dark:bg-{{ $card['color'] }}-900/30">
-                                <svg xmlns="http://www.w3.org/2000/svg" 
-                                    class="h-6 w-6 text-{{ $card['color'] }}-600 dark:text-{{ $card['color'] }}-400" 
-                                    fill="none" 
-                                    viewBox="0 0 24 24" 
+                            <!-- Highlight kotak warna dengan border dan background -->
+                            <div
+                                class="rounded-lg border-2 border-{{ $card['color'] }}-400 bg-{{ $card['color'] }}-100/50 p-2
+                                    dark:border-{{ $card['color'] }}-500
+                                    dark:bg-{{ $card['color'] }}-900/30
+                                    transition-colors duration-300
+                                    group-hover:border-{{ $card['color'] }}-600
+                                    group-hover:bg-{{ $card['color'] }}-200/70
+                                    dark:group-hover:border-{{ $card['color'] }}-400
+                                    dark:group-hover:bg-{{ $card['color'] }}-800/40
+                                    cursor-pointer
+                                ">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-{{ $card['color'] }}-600 dark:text-{{ $card['color'] }}-400
+                                        transition-colors duration-300
+                                        group-hover:text-{{ $card['color'] }}-800
+                                        dark:group-hover:text-{{ $card['color'] }}-200"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
                                     stroke="currentColor">
-                                    <path stroke-linecap="round" 
-                                        stroke-linejoin="round" 
-                                        stroke-width="2" 
+                                    <path stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
                                         d="{{ $icons[$card['color']] }}" />
                                 </svg>
                             </div>
+
                             <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">{{ $card['label'] }}</h2>
                         </div>
                         <p class="mt-4 text-3xl font-bold text-{{ $card['color'] }}-600 dark:text-{{ $card['color'] }}-400">{{ $card['count'] }}</p>
 
-                        {{-- Tampilkan keterangan jika ada --}}
                         @if (!empty($card['note']))
                             <div class="absolute bottom-1 right-1">
                                 <span class="text-xs font-semibold px-3 py-1 rounded-full bg-green-900/50 text-green-300">
@@ -63,6 +77,7 @@
                 </div>
             @endforeach
         </div>
+
 
 
         <div class="rounded-xl border bg-white p-6 shadow-sm dark:border-gray-700/50 dark:bg-gray-800/90">
@@ -130,64 +145,68 @@
             </div>
         </div>
     </div>
-
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        // Tunggu sampai seluruh konten halaman selesai dimuat
         document.addEventListener('DOMContentLoaded', function () {
+            // Ambil context 2D dari canvas dengan id 'activityLineChart'
             const ctx = document.getElementById('activityLineChart')?.getContext('2d');
+            // Jika elemen canvas tidak ditemukan, hentikan eksekusi
             if (!ctx) return;
 
+            // Buat gradient warna untuk background garis grafik, dari semi transparan ke sangat transparan
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.3)');
-            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.05)');
+            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.3)');  
+            gradient.addColorStop(1, 'rgba(59, 130, 246, 0.05)');  
 
+            // Membuat chart baru dengan tipe 'line' (grafik garis)
             new Chart(ctx, {
                 type: 'line',
                 data: {
+                    // Label sumbu X diambil dari data PHP yang sudah di-encode ke JSON
                     labels: @json($chartData['labels']),
                     datasets: [{
-                        label: 'Jumlah Aktivitas',
-                        data: @json($chartData['counts']),
-                        borderColor: '#3b82f6',
-                        backgroundColor: gradient,
-                        borderWidth: 2,
-                        tension: 0.4,
-                        fill: true,
-                        pointBackgroundColor: '#fff',
-                        pointBorderColor: '#3b82f6',
-                        pointBorderWidth: 2,
-                        pointRadius: 4,
-                        pointHoverRadius: 6
+                        label: 'Jumlah Aktivitas', // Label dataset (biasanya muncul di tooltip)
+                        data: @json($chartData['counts']),  // Data jumlah aktivitas di sumbu Y
+                        borderColor: '#3b82f6',               // Warna garis biru
+                        backgroundColor: gradient,            // Warna isi area di bawah garis menggunakan gradient
+                        borderWidth: 2,                       // Ketebalan garis
+                        tension: 0.4,                        // Kelengkungan garis (0 = lurus, semakin tinggi semakin melengkung)
+                        fill: true,                         // Isi area di bawah garis dengan warna backgroundColor
+                        pointBackgroundColor: '#fff',       // Warna titik data di dalam
+                        pointBorderColor: '#3b82f6',        // Warna garis tepi titik data
+                        pointBorderWidth: 2,                // Ketebalan garis tepi titik
+                        pointRadius: 4,                     // Ukuran titik data
+                        pointHoverRadius: 6                 // Ukuran titik saat hover (cursor mouse di atas)
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: true,             // Grafik responsif mengikuti ukuran container
+                    maintainAspectRatio: false,  // Tidak mempertahankan rasio aspek default (biar bisa flexible tinggi container)
                     scales: {
                         y: {
-                            beginAtZero: true,
+                            beginAtZero: true,  // Sumbu Y mulai dari 0
                             grid: {
-                                color: 'rgba(0, 0, 0, 0.05)',
-                                drawBorder: false
+                                color: 'rgba(0, 0, 0, 0.05)',  // Warna garis grid sumbu Y (sangat terang)
+                                drawBorder: false              // Tidak menampilkan garis tepi pada sumbu Y
                             },
                             ticks: {
-                                stepSize: 1
+                                stepSize: 1                 // Langkah nilai pada sumbu Y naik 1 per satuan
                             }
                         },
                         x: {
                             grid: {
-                                display: false,
-                                drawBorder: false
+                                display: false,            // Tidak menampilkan grid garis di sumbu X
+                                drawBorder: false          // Tidak menampilkan garis tepi pada sumbu X
                             }
                         }
                     },
                     plugins: {
                         legend: {
-                            display: false
+                            display: false   // Tidak menampilkan legenda di grafik (karena cuma 1 dataset)
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(17, 24, 39, 0.9)',
+                            backgroundColor: 'rgba(17, 24, 39, 0.9)',  // Warna latar tooltip gelap transparan
                             titleFont: {
                                 size: 14,
                                 weight: 'bold'
@@ -195,9 +214,10 @@
                             bodyFont: {
                                 size: 12
                             },
-                            padding: 12,
-                            usePointStyle: true,
+                            padding: 12,            // Jarak dalam tooltip
+                            usePointStyle: true,    // Menggunakan titik kecil sebagai ikon di tooltip
                             callbacks: {
+                                // Format label tooltip, misal: "5 aktivitas"
                                 label: function(context) {
                                     return `${context.parsed.y} aktivitas`;
                                 }
@@ -205,11 +225,12 @@
                         }
                     },
                     interaction: {
-                        intersect: false,
-                        mode: 'index'
+                        intersect: false,  // Tooltip muncul saat kursor mendekati titik data, tidak harus tepat di titik
+                        mode: 'index'      // Tooltip tampil berdasarkan posisi index X (menunjukkan semua dataset di posisi X)
                     }
                 }
             });
         });
     </script>
+
 </x-layouts.app>

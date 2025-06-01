@@ -9,11 +9,13 @@ class View extends Component
 {
     public $guru;
 
+    // cari data berdasarkan id
     public function mount($id)
     {
         $this->guru = Guru::findOrFail($id);
     }
 
+    // memberi keterangan
     public function ketGender($gender)
     {
         if ($gender === 'L') {
@@ -25,6 +27,7 @@ class View extends Component
         }
     }
 
+    // memberi keterangan
     public function render()
     {
         return view('livewire.guru.view');

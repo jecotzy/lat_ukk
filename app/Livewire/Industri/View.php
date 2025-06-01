@@ -9,6 +9,7 @@ class View extends Component
 {
     public $industri;
 
+    // cari industri berdasarkan id
     public function mount($id)
     {
         $this->industri = Industri::findOrFail($id);

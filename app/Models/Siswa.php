@@ -10,11 +10,15 @@ class Siswa extends Model
 {
     use HasFactory,HasApiTokens;
 
-    // Tambahkan baris ini untuk memastikan Laravel tahu nama tabelnya
+    // Menentukan nama tabel terkait model ini
     protected $table = 'siswas';
 
+    // Kolom yang boleh diisi (mass assignment)
     protected $fillable = ['nama', 'nis', 'gender', 'alamat', 'kontak', 'email', 'foto', 'status_lapor_pkl'];
 
+    /**
+     * Relasi one-to-many: satu siswa bisa memiliki banyak data PKL
+     */
     public function pkls()
     {
         return $this->hasMany(Pkl::class);

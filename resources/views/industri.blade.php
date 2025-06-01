@@ -1,6 +1,7 @@
 <x-layouts.app>
-    <flux:heading size="xl" level="1">{{ __('Tabel Industri') }}</flux:heading>
-    <flux:subheading size="lg" class="mb-4">{{ __('Pantau data industri disini') }}</flux:subheading>
+    <flux:heading size="xl" level="1">{{ __('Data Industri') }}</flux:heading>
+    <flux:subheading size="lg" class="mb-4">{{ __('Lihat dan kelola informasi industri secara lengkap di sini.') }}</flux:subheading>
+
 
     <flux:separator variant="subtle" class="my-2" />
 

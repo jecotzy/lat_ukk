@@ -14,10 +14,13 @@
                 placeholder="Cari siswa...">
 
             <!-- Tombol Tambah Siswa -->
+            <!-- agar hanya super admin yang melihat -->
+            @role('super_admin')
             <a href="{{ route('siswa.create') }}"
                 class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-5 py-2 rounded-lg shadow-md text-center">
                 Tambah Siswa
             </a>
+            @endrole
         </div>
     </div>
 
@@ -77,14 +80,22 @@
 
                             <!-- Kolom Aksi: Tombol View, Edit, Delete -->
                             <td class="px-6 py-4 text-right">
-                                <div class="flex justify-end gap-2">
-                                    <a href="{{ route('siswa.show', $siswa->id) }}"
-                                       class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded">View</a>
-                                    <a href="{{ route('siswa.edit', $siswa->id) }}"
-                                       class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded">Edit</a>
-                                    <button wire:click="confirmDelete({{ $siswa->id }})"
-                                            class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded">Delete</button>
-                                </div>
+                                @role('super_admin')
+                                    <div class="flex justify-end gap-2">
+                                        <a href="{{ route('siswa.show', $siswa->id) }}"
+                                        class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded">View</a>
+                                        <a href="{{ route('siswa.edit', $siswa->id) }}"
+                                        class="bg-green-600 hover:bg-green-500 text-white px-3 py-1 rounded">Edit</a>
+                                        <button wire:click="confirmDelete({{ $siswa->id }})"
+                                        class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded">Delete</button>
+                                    </div>
+                                @else
+                                    <!-- Jika bukan super_admin: tampilkan View saja dan center -->
+                                    <div class="flex justify-center">
+                                        <a href="{{ route('siswa.show', $siswa->id) }}"
+                                        class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded">View</a>
+                                    </div>
+                                @endrole
                             </td>
                         </tr>
                     @empty
